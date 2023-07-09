@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <input id="input" type="file" accept=".jpg,.png">
+    <div id="output"></div>
+
+    <script>
+        import { client } from "@gradio/client";
+
+        const fileUpload = Document.querySelector("#input");
+        const result = Document.querySelector("#output");
+
+
+
+        async function run(image) {
+        const app = await client("https://ben12002-bear-classifier.hf.space/");
+        const result = await app.predict("/predict", [
+                    image, 	// blob in 'img' Image component
+        ]);
+        console.log(result?.data);
+        }
+
+
+        fileUpload.addEventListener('change', function(event) {
+            let file = event.target.files[0];
+            if (file) {
+                const blob = new Blob([file], { type: file.type });
+                run(new Blob([file], {type: file.type }));
+            }
+        }
+
+
+
+
+    </script>
+    
+</body>
+</html>
